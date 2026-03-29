@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<!-- Otwórz tę stronę jednorazowo aby wygenerować ikony PNG dla PWA -->
+<html><body>
+<canvas id="c"></canvas>
+<a id="a192" download="icon-192.png">Pobierz 192×192</a><br>
+<a id="a512" download="icon-512.png">Pobierz 512×512</a>
+<script>
+function makeIcon(size) {
+  const c = document.createElement('canvas');
+  c.width = c.height = size;
+  const ctx = c.getContext('2d');
+  const r = size * 0.156;
+  // Background
+  ctx.beginPath();
+  ctx.moveTo(r,0); ctx.lineTo(size-r,0);
+  ctx.quadraticCurveTo(size,0,size,r);
+  ctx.lineTo(size,size-r);
+  ctx.quadraticCurveTo(size,size,size-r,size);
+  ctx.lineTo(r,size);
+  ctx.quadraticCurveTo(0,size,0,size-r);
+  ctx.lineTo(0,r);
+  ctx.quadraticCurveTo(0,0,r,0);
+  ctx.closePath();
+  ctx.fillStyle = '#6366f1';
+  ctx.fill();
+  // White content scaled
+  const s = size / 512;
+  ctx.fillStyle = 'rgba(255,255,255,0.15)';
+  ctx.fillRect(80*s, 100*s, 352*s, 260*s);
+  // Mountain left
+  ctx.beginPath();
+  ctx.moveTo(130*s, 300*s); ctx.lineTo(220*s, 180*s); ctx.lineTo(310*s, 300*s);
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(255,255,255,0.9)';
+  ctx.fill();
+  // Mountain right
+  ctx.beginPath();
+  ctx.moveTo(240*s, 300*s); ctx.lineTo(320*s, 210*s); ctx.lineTo(400*s, 300*s);
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(255,255,255,0.7)';
+  ctx.fill();
+  // Sun
+  ctx.beginPath();
+  ctx.arc(370*s, 175*s, 28*s, 0, Math.PI*2);
+  ctx.fillStyle = 'rgba(255,255,255,0.85)';
+  ctx.fill();
+  // Arrow
+  ctx.strokeStyle = 'white'; ctx.lineWidth = 14*s; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  ctx.beginPath(); ctx.moveTo(140*s,380*s); ctx.lineTo(240*s,380*s); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(220*s,360*s); ctx.lineTo(240*s,380*s); ctx.lineTo(220*s,400*s); ctx.stroke();
+  return c;
+}
+window.onload = () => {
+  [192,512].forEach(size => {
+    const c = makeIcon(size);
+    document.getElementById(`a${size}`).href = c.toDataURL('image/png');
+  });
+};
+</script>
+</body></html>
